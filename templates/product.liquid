@@ -1,0 +1,139 @@
+<div class="row-fluid container">
+  <div class="span3" >
+    <div style="min-height:100px; border:1px solid #ecdbc6;">
+      <p style="color: #5d3f3f;text-decoration: none;font-size: 15px;padding:5px 10px;background:white;">SHARE PRODUCT</p>
+      <div style="padding:5px">         
+          {% if settings.show_social %}
+          <!-- Begin social buttons -->
+          <div class="social">
+            {% include 'like' %}
+          </div>
+          <!-- End social buttons -->
+          {% endif %}
+      </div>
+    </div>
+    <div style="min-height:200px; border:1px solid #ecdbc6;margin-top:10px">
+      <p style="color: #5d3f3f;text-decoration: none;font-size: 15px;padding:5px 10px;background:white">TAG CLOUD</p>
+      <div class="tag_cloud">
+        <ul style="margin-left:20px">
+            {% for tag in collection.all_tags %}
+            {% if current_tags contains tag %}
+            <li>
+              {{ tag | link_to_remove_tag: tag }}
+            </li>
+            {% else %}
+            	<li><a href="{{collection.url }}/{{ tag | handle }}">{{ tag }}</a></li>
+            {% endif %}
+            {% endfor %}  
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="span9" style="margin:0px">
+    <div class="breadcrumb clearfix">
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url"><span itemprop="title">Home</span></a></span> 
+        <span class="arrow-space">&#62;</span>
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+          {% if collection %}
+            <a href="{{ collection.url }}" title="{{ collection.title | escape }}">{{ collection.title }}</a>
+          {% else %}
+            <a href="/collections/all" title="All Products">Products</a>
+          {% endif %}
+        </span>
+        <span class="arrow-space">&#62;</span>
+        <strong>{{ product.title }}</strong>
+     
+     </div>
+    <div id="product" class="{{ product.handle }} row-fluid" style="background:white;">
+      <div class="span4" style="margin:0px;padding:5px 0 5px 5px;">
+        <div style="height:220px;width:100%">
+          <div class="image featured">
+            {% if settings.enable_product_image_zoom %}
+            <a href="{{ product.featured_image | product_img_url: 'original' }}" class="cloud-zoom" rel="position: 'inside', showTitle: 'false'" id="placeholder">
+              <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="{{ product.featured_image.alt | escape }}" />
+            </a>
+            {% else %}
+            <a href="{{ product.featured_image | product_img_url: 'original' }}" class="zoom" id="placeholder">
+              <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="{{ product.featured_image.alt | escape }}" />
+            </a>
+            {% endif %}
+          </div>
+        </div>
+          <div style="width:100%;margin-bottom:20px" class="thumbs clearfix"> 
+            {% for image in product.images %}
+            {% if settings.enable_product_image_zoom %}
+              <div class="image">
+                <a href="{{ image | product_img_url: 'original' }}" class="cloud-zoom-gallery" rel="useZoom: 'placeholder', smallImage: '{{ image | product_img_url: 'grande' }}', tint: '#ffffff'">
+                  <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
+                </a>
+              </div>
+              {% else %}
+             <div class="image_icon" style="">
+                <a href="{{ image | product_img_url: 'original' }}" data-original-image="{{ image | product_img_url: 'original' }}">
+                  <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
+                </a>
+              </div>
+            {% endif %}
+            {% endfor %}
+         </div> 
+      </div>
+      <div class="span8" style="padding:5px 5px 5px 0;margin:0px;float:right !important;position:relative">
+        <form id="add-item-form" action="/cart/add" method="post" class="variants clearfix">
+          <select id="product-select" name="id">
+            {% for variant in product.variants %}
+            <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+            {% endfor %}
+          </select>
+          <input type="submit" id="add-to-cart" class="btn_button" name="add" value="Add to Cart" style="position: absolute;right:10px;bottom:15px" /> 
+        </form>
+        {% if collection and collection.previous_product or collection.next_product %}            
+          <div style="height:45px;margin-top:-20px;padding:0px;">
+          {% if collection.previous_product %}
+        	<a href="{{ collection.previous_product}}" class="btn_button" style="position: absolute;left:0px;top:10px">Previous</a>
+          {% endif %}
+          {% if collection.next_product %}
+           	<a href="{{ collection.next_product}}" class="btn_button" style="position: absolute;right:20px;top:10px">Next</a>
+          {% endif %}
+           </div>
+        <!-- <p style="text-align: center;">Product ? off {{ collection.all_products_count }}</p> -->
+        {% endif %}
+        <a href="#" class="btn_button" style="position: absolute;left:0px;bottom:20px">Reviews</a>
+        <p style="font-size:12px;">This product was added to our catalog on {{product.created_at | date:"%a %d %b %Y" }}</p>
+        <div id="content_product">
+          <h5 style="font-size:16px;color: #ce6140 ">{{product.title}}</h5>
+        
+          <p>Price: <span style="color:red;font-size:20px;font-weight: normal;">{% if product.price_min < product.compare_at_price_min %} <del> {{ product.compare_at_price_min | money }}</del>{% endif %}</span> &nbsp;<strong style="font-size:24px;color: #B19F9F;font-weight: normal; ">{{ product.price_min | money }}</strong></p>
+          <hr />
+          <p>{{product.description}}</p>
+        </div>
+      </div>
+      <table style="border:1px solid #ecdbc6;margin: 0px 10px 10px 10px;width: 97%;">
+        <tr>
+          <td style="color: #5d3f3f;background:white;padding-left:10px">TAGS OF PRODUCT</td>
+        </tr>
+        <tr>
+          <td  style="color: #ce6140;padding-left:10px">
+            <ul>
+              {% for tag in product.tags%}
+                  <li style="float:left;margin-left:10px"><a href="{{collection.url }}/{{ tag | handle }}">{{ tag }}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% if settings.show_related_products %}
+      {% if collection and collection.products.size > 1 %}
+        <div style="background:white;border:1px solid #ecdbc6;margin-top:10px">
+          <p style="color: #5d3f3f !important;text-decoration: none;font-size: 15px;padding:5px 10px;background:white;border-bottom:1px solid #ecdbc6">OTHER PRODUCTS YOU MIGHT LIKE</p>
+          <div class="row-fluid products div_other_product" style="">
+            {% for product in collection.products limit:4 %}
+            	{% include 'other_product' with collection.handle %}
+            {% endfor %}
+           </div>
+  
+         </div>
+       {% endif %}
+     {% endif %}
+  </div>
+</div>

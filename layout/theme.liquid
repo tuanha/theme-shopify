@@ -1,0 +1,226 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+
+  <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>{% if template == "404" %}Page not found{% elsif template == 'index' %}{{ shop.name }}{% if settings.title_tags != "" %} - {{ settings.title_tags }}{% endif %}{% else %}{{ page_title }} - {{ shop.name }}{% endif %}</title>
+
+  {% if page_description %}
+  <meta name="description" content="{{ page_description }}" />
+  {% endif %}
+
+  <meta name="author" content="{{ settings.meta_author }}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <link rel="canonical" href="{{ canonical_url }}" /> 
+
+  {% include 'fb-open-graph-tags' %}
+	
+  {{ 'styles.css' | asset_url | stylesheet_tag }}
+  {{ 'bootstrap.css' | asset_url | stylesheet_tag }}
+  
+  {% if settings.google_header_font != "none" %}
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family={{ settings.google_header_font }}:300,400,700">
+  {% endif %}
+  {% if settings.google_nav_font != "none" %}
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family={{ settings.google_nav_font }}:300,400,700">
+  {% endif %}
+  {{ 'html5shiv.js' | asset_url | script_tag }}
+  {{ 'bootstrap.js' | asset_url | script_tag }}
+  
+  {{ content_for_header }}
+  
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  
+<!-- Added by Lexity. DO NOT REMOVE/EDIT -->
+<meta name="google-site-verification" content="MfT3T1u_VHbY1QHrfhk7aNQVANybsbfsTA2QIT_5o2s" />
+<script type="text/javascript">
+(function (d, w) {
+  var x = d.getElementsByTagName('SCRIPT')[0], g = d.createElement('SCRIPT'); 
+  g.type = 'text/javascript';
+  g.async = true;
+  g.src = ('https:' == d.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  x.parentNode.insertBefore(g, x);
+}(document, window));
+</script>
+<!-- End of addition by Lexity. DO NOT REMOVE/EDIT -->
+</head>
+
+<body>
+<div id="wrapper" style=" background-image:url('{{'wrapper_bg.jpg' | asset_url}}')">
+  <div id="header" style="height:210px">
+    <div id="wrapper_boxes">
+      <div class="boxes_menu container">
+        <div class="menu">
+          <ul>
+            {% for link in linklists.main-menu.links %}
+              <li>{{ link.title | link_to: link.url }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+        
+        <div class="languages" style="float:right;padding:3px 5px;height:28px">
+          <label  style="float:left" >Currencies: </label>
+          <form method="get" style="float:left">
+            <select style="height:20px;width:70px;padding:0px;">
+              <option>Us Dollar</option>
+              <option>Euro</option>            
+            </select>
+          </form>
+          <ul style="float:left;margin-left:0">
+            <li><a href ="#">En</a></li>
+            <li><a href ="#">Vi</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container" style="position: relative;margin-top:0px;">
+        <div class="box_header_user_menu">
+        	<ul class="user_menu">
+              <li><a href="#">Shipping & Returns</a></li>
+              <li><a href="/search">Advanced Search</a></li>
+              {% if shop.customer_accounts_enabled %}
+              {% if customer %}
+                <li><a href="/account">{{ customer.name }}</a></li>
+                <li>{{ 'Logout' | customer_logout_link }}</li>
+              {% else%}
+                <li>
+                   {{ 'Create an Account' | customer_register_link }} 
+                </li>
+                <li>          
+                    {{ 'Log in' | customer_login_link }}
+                </li>
+              {%endif%}
+            {% endif %}
+          </ul>
+        </div>
+        <div>
+        {% if settings.use_logo %}
+        <a href="/" class="logo" ><img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" /></a>
+        {% else %}
+        <h1><a href="/"  class="logo">{{ shop.name }}</a></h1>
+        {% endif %}
+      	</div>
+        <div class="search">
+           <form class="" action="/search">
+              <input type="text" name="q" class="search_box" placeholder="Search stile" value="{{ search.terms }}" x-webkit-speech />
+              <input type="submit" value="Search" id="go" class="btn_search">
+          </form>
+        </div>
+        <div style="position: absolute;right: 0px;top: 45px">
+        	<img src="{{ 'shopping-cart.png' | asset_url }}" alt="shopping cart" style="height:50px;width:50px;float:left;margin:-20px 10px 0 0"/>
+        	<label style="font-weight: bold;float: left;color: #8e2a17 ">Shopping Cart : </label><a href="/cart" style="color:#5d3f3f;">{{ cart.item_count }} Items</a>
+     	</div>
+      </div>
+     
+          
+      {% if settings.display-product-menu  %}
+      {% include 'product_menu'%}
+      {% endif%}
+    </div>
+  </div>
+  <section id="content" class="clearfix container">
+    {% if template == "list-collections" %}
+    <div id="collection" class="row">
+      <div class="span12">
+        <h1><span>Product Collections</span></h1>
+      </div> <!-- /.span12 -->
+    </div> <!-- /.row -->
+    
+    <div class="row products masonry">
+      {% for collection in collections %}
+      {% unless collection.all_products_count == 0 or collection.handle == "frontpage" %}
+      {% include 'collection-loop' %}
+      {% endunless %}
+      {% endfor %}
+    </div> <!-- /#collection.row -->
+    {% else %}
+    {{ content_for_layout }}
+    {% endif %}
+  </section>
+  <div class="footer-wrapper">
+    <footer>
+        <!-- Begin footer navigation -->
+      <div class="container">
+        <div class="menu-footer clearfix">
+          <ul class="unstyled clearfix">
+            {% for link in linklists[settings.footer_linklist].links %}
+            <li><a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="link-ft">
+		<p><a href="#">Tea Store</a>&nbsp;&nbsp; © 2013 &nbsp; <a href="#">Privacy Notice</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Conditions of Use</a></p>
+      </div>
+    
+    </footer>
+   </div>
+</div>
+
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+    
+  {% if settings.display_slideshow %}
+    {{ 'jquery.flexslider-min.js' | asset_url | script_tag }}
+  {% endif %}
+  {% if settings.enable_product_image_zoom %}
+    {{ 'jquery.zoom.js' | asset_url | script_tag }}
+  {% endif %}
+  {{ 'jquery.tweet.js' | asset_url | script_tag }}
+  {{ 'jquery.fancybox.js' | asset_url | script_tag }}
+  {{ 'scripts.js' | asset_url | script_tag }}
+  
+  {% if template contains 'product' %}
+  
+  <script>
+
+  var selectCallback = function(variant, selector) {
+    if (variant && variant.available) {
+      jQuery('#add-to-cart').removeAttr('disabled').removeClass('disabled'); // remove unavailable class from add-to-cart button, and re-enable button
+      if(variant.price < variant.compare_at_price){
+        jQuery('#price-preview').html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}") + " <del>" + Shopify.formatMoney(variant.compare_at_price, "{{ shop.money_format }}") + "</del>");
+      } else {
+        jQuery('#price-preview').html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}"));
+      }
+    } else {
+      jQuery('#add-to-cart').addClass('disabled').attr('disabled', 'disabled'); // set add-to-cart button to unavailable class and disable button
+      var message = variant ? "Sold Out" : "Unavailable";
+      jQuery('#price-preview').text(message);
+    }
+  };
+  
+  jQuery(document).ready(function($){
+    new Shopify.OptionSelectors("product-select", { product: {{ product | json }}, onVariantSelected: selectCallback });
+
+    // Add label if only one product option and it isn't 'Title'.
+    {% if product.options.size == 1 and product.options.first != 'Title' %}
+      $('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first }}</label>');
+    {% endif %}
+  
+    // Auto-select first available variant on page load.
+    {% assign found_one_in_stock = false %}
+    {% for variant in product.variants %}
+      {% if variant.available and found_one_in_stock == false %}
+        {% assign found_one_in_stock = true %}
+        {% for option in product.options %}
+        $('.single-option-selector:eq({{ forloop.index0 }})').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+  });
+  </script>
+  {% endif %}
+  </body>
+</html>

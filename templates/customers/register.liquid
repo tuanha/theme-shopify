@@ -1,0 +1,54 @@
+{% layout settings.customer_layout %}
+<div class="row-fluid container" style="">
+  <div class="span3" style="min-height:200px; border:1px solid #ecdbc6">
+    <p style="color: #5d3f3f;text-decoration: none;font-size: 15px;padding:5px 10px;background:white">TAG CLOUD</p>
+    <div>
+		
+    </div>
+  </div>
+  <div class="span9" style="margin:0px">
+	<div class="breadcrumb clearfix" style="border:1px solid #ecdbc6">
+        <a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url">Home</a>
+          <span class="arrow-space">&#62;</span>
+      <a href="/account/register" title="cart" itemprop="url" style="color:#8e2a17">Create an account</a>    
+     </div>
+    <div style="border:1px solid #ecdbc6;background:white;padding:0px">
+      <p style="font-size:14px;color: #5d3f3f;text-transform: uppercase;margin:5px 10px">MY ACCOUNT INFORMATION </p>
+    </div>
+    <p class="infoString">&nbsp;&nbsp;<font color="#FF0000"><small><strong>NOTE:</strong></small></font> If you already have an account with us, please login at the <u>{{ 'login page' | customer_login_link }}</u>.</p>
+    <div id="customer-register" style="border:1px solid #ecdbc6;background:white;padding:0 20px 20px 20px">
+      <div id="register" style="padding-bottom:30px">
+      	<h2 style="font-size:15px;color: #ce6140;font-weight: bold;">Create Account</h2>
+        {% form 'create_customer' %}
+	
+	      {{ form.errors | default_errors }}
+
+	      <div id="first_name" class="clearfix large_form">
+	        <label for="first_name" class="label_create_account">First Name</label>
+	        <input type="text" value="" name="customer[first_name]" id="first_name" class="text" size="30" />
+	      </div>
+
+	      <div id="last_name" class="clearfix large_form">
+	        <label for="last_name" class="label_create_account">Last Name</label>
+	        <input type="text" value="" name="customer[last_name]" id="last_name" class="text" size="30" />
+	      </div>
+
+	      <div id="email" class="clearfix large_form">
+	        <label for="email" class="label_create_account">Email Address</label>
+	        <input type="email" value="" name="customer[email]" id="email" class="text" size="30" />
+	      </div>
+
+	      <div id="password" class="clearfix large_form">
+	        <label for="password" class="label_create_account">Password</label>
+	        <input type="password" value="" name="customer[password]" id="password" class="password text" size="30" />
+	      </div>
+
+        <div class="action_bottom" style="float:right">
+          <input class="btn_button" type="submit" value="Continue" style=""/>
+	    </div>
+	
+	    {% endform %}
+      </div>    
+    </div>
+  </div>
+</div>

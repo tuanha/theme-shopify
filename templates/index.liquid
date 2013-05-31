@@ -1,0 +1,91 @@
+<!-- Begin slider -->
+<div class="container">
+  <div class="flexslider-container">
+    <div class="flexslider">
+      <ul class="slides">
+        {% if settings.display_slideshow_1 %}
+        <li><a href="{{ settings.image_1_link }}"><img src="{{ 'slideshow_1.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_2 %}
+        <li><a href="{{ settings.image_2_link }}"><img src="{{ 'slideshow_2.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_3 %}
+        <li><a href="{{ settings.image_3_link }}"><img src="{{ 'slideshow_3.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_4 %}
+        <li><a href="{{ settings.image_4_link }}"><img src="{{ 'slideshow_4.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_5 %}
+        <li><a href="{{ settings.image_5_link }}"><img src="{{ 'slideshow_5.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_6 %}
+        <li><a href="{{ settings.image_6_link }}"><img src="{{ 'slideshow_6.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_7 %}
+        <li><a href="{{ settings.image_7_link }}"><img src="{{ 'slideshow_7.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_8 %}
+        <li><a href="{{ settings.image_8_link }}"><img src="{{ 'slideshow_8.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_9 %}
+        <li><a href="{{ settings.image_9_link }}"><img src="{{ 'slideshow_9.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+        {% if settings.display_slideshow_10 %}
+        <li><a href="{{ settings.image_10_link }}"><img src="{{ 'slideshow_10.jpg' | asset_url }}" /></a></li>
+        {% endif %}
+      </ul>
+      <div class="flex-controls"></div>
+    </div>
+  </div>
+</div>
+<!-- End slider -->
+{% if settings.gallery == 'frontpage' %}
+	  <div class="clearfix" id="garery-images" style="margin-bottom:15px;width:100%;">
+        <p style="font-size: 14px;text-transform: uppercase;color: #5d3f3f !important;padding: 5px 10px;border-bottom: 1px solid #ECDBC6">PRODUCTS FEARTURED</p>
+        {% for product in collections[settings.frontpage_collection].products limit: 3%}
+  		  {% include 'galery-feature' with settings.frontpage_collection %}
+        {% endfor %}
+	  </div>
+{% endif %}
+{% if settings.gallery == 'top-sellers' %}
+	  <div class="clearfix" id="garery-images" style="margin-bottom:15px;width:100%;">
+        <p style="font-size: 14px;text-transform: uppercase;color: #5d3f3f !important;padding: 5px 10px;border-bottom: 1px solid #ECDBC6">TOP SELLERS</p>
+        {% for product in collections[settings.gallery].products limit: 3%}
+  		  {% include 'galery-feature' with settings.gallery %}
+        {% endfor %}
+	  </div>
+{% endif %}
+
+{% if settings.gallery == 'categories' %}
+<div>aaaa</div>
+{% endif %}
+
+{% if settings.homepage != blank %}
+<!-- Begin intro -->
+<div class="span12 p20">
+  <div class="intro clearfix">
+    <h2>{{ pages[settings.homepage].title }}</h2>
+    <h3>{{ pages[settings.homepage].content }}</h3>
+  </div>
+</div>
+<!-- End intro -->
+{% endif %}
+{% if settings.frontpage_collection != '' %} 
+<div class="products clearfix" style="padding:0;border:1px solid #ECDBC6;">
+  <p style="font-size: 14px;text-transform: uppercase;color: #5d3f3f !important;padding: 5px 10px;border-bottom: 1px solid #ECDBC6">NEW PRODUCTS FOR MAY</p>
+  {% for product in collections[settings.frontpage_collection].products limit: 5%}
+  	{% include 'product_featured' with settings.frontpage_collection %}
+ 
+  {% endfor %}
+</div>
+{% endif %}
+{% if settings.show_collections and settings.frontpage_collections != '' and settings.frontpage_collections != 'main-menu' and linklists[settings.frontpage_collections].links.size > 0 %}
+<div class="products">
+  {% for link in linklists[settings.frontpage_collections].links %}
+  {% if link.type == 'collection_link' %}
+    {% assign collection = link.object %}
+    {% include 'collection-loop' %}
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}

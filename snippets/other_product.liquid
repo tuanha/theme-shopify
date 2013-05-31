@@ -1,0 +1,29 @@
+<div class="other_product">
+      <form id="add-item-form" action="/cart/add" method="post" class="variants clearfix">
+        <select id="product-select" name="id" style="display:none">
+          {% for variant in product.variants %}
+          	<option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+          {% endfor %}
+        </select>
+        <div class="image_product">
+           <a href="{{ product.url }}"><img src="{{ product.featured_image | product_img_url: 'medium'  }}" /></a>
+        </div>
+        <a href="{{ product.url }}" style="color: #ce6140;font-size: 14px;font-family: "Times New Roman",Times,serif;line-height: 1.35em;">{{ product.title }}</a>
+        <br />
+         <span class="price">
+          {% if product.available %}
+            {% if product.compare_at_price_max > product.price %}
+              <span style="color:red;font-size:17px;font-weight: normal;float:left;margin-right:10px"> <del>{{ product.compare_at_price | money }}</del> </span>&nbsp;
+            {% endif %}
+            {% if product.price_varies %}
+            <small><em>from</em></small>
+            {% endif %}
+			<p style="float:left">{{ product.price | money }}</p>
+          {% else %}
+            {{ product.price | money }} Sold Out
+          {% endif %}
+        </span> <br />
+        <input type="submit" id="add-to-cart" class="btn_button" name="add" value="By Now"/> 
+        
+      </form>
+  	</div>

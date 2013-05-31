@@ -1,0 +1,71 @@
+<div id="search">
+  <div class="breadcrumb clearfix" style="border:1px solid #ecdbc6">
+         <a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url"><span itemprop="title">Home</span></a>
+         <span class="arrow-space">&#62;</span>
+      	 <a href="/search" title="cart" itemprop="url" tyle="color:#8e2a17">Search</a>  
+          
+     </div>
+  {% if search.performed %}
+  {% paginate search.results by settings.pagination_limit %}
+
+  {% if search.terms == "" %}
+  <div class="container" style="background:white;min-height:600px;border:1px solid #ecdbc6 ">
+    <div class="span12 expanded-message">
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value="" x-webkit-speech />
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  
+  {% if search.results == empty %}
+  <div class="row">
+    <div class="span12 expanded-message" style="border:1px solid #ecdbc6;min-height:600px;background:white">
+      <h1 style="color: #5d3f3f;border-bottom:1px solid #ecdbc6 ;font-size:14px;display:block;padding:0px;padding-left:20px;line-height:30px;font-weight:300;margin-top:0px">NO SEARCH RESULTS</h1>
+      <span class="subtext" style="margin-left:20px">Your search for <strong>"{{ search.terms }}"</strong> did not yield any results. Try searching for something else.</span>
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value="{{ search.terms | escape }}" x-webkit-speech />
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  
+    <div class="container results" style="background:white">
+      <h1 style="color: #5d3f3f;border:1px solid #ecdbc6 ;font-size:14px;display:block;padding:0px;padding-left:20px;line-height:30px;font-weight:300;margin-top:0px">SEARCH RESULTS</h1>
+  
+  <!-- Begin results -->
+  {% for product in search.results %}
+     {% include 'product-loop' %}
+
+  {% endfor %}
+  <!-- End results -->
+  
+  {% include 'pagination' %}
+
+  {% endif %}
+  {% endif %}
+
+  {% endpaginate %}
+    </div>
+  {% else %}
+
+  <div class="container" style="background:white;min-height:600px;border:1px solid #ecdbc6 ">
+    <h1 style="color: #5d3f3f;border-bottom:1px solid #ecdbc6 ;font-size:14px;display:block;padding:0px;padding-left:20px;line-height:30px;font-weight:300;margin-top:0px">ADVANCED SEARCH</h1>
+    <div class="span12 expanded-message">
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value="" x-webkit-speech />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}	
+</div> <!-- /#search -->

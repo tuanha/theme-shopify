@@ -1,0 +1,8 @@
+Show product
+{% for product in collection.products limit: 5 %}
+<div class="image">
+    <a href="{{ url }}">
+      <img src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.title | escape  }}" />
+    </a>
+  </div>          
+{% endfor %}  

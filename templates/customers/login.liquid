@@ -1,0 +1,89 @@
+{% layout settings.customer_layout %}
+<div class="row-fluid container" style="">
+  <div class="span3" style="min-height:200px; border:1px solid #ecdbc6">
+    <p style="color: #5d3f3f;text-decoration: none;font-size: 15px;padding:5px 10px;background:white">TAG CLOUD</p>
+    <div>
+		{% for tag in collections.all-products.all_tags %}  
+    <li><a href="{{ shop.url }}/collections/all/{{ tag | downcase | replace: ' ', '-' }}">{{ tag }}</a></li>
+  {% endfor %}
+    </div>
+  </div>
+  <div class="span9" style="margin:0px">
+    <div class="breadcrumb clearfix" style="border:1px solid #ecdbc6">
+      <a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url">Home</a>
+      <span class="arrow-space">&#62;</span>
+      <a href="/account/login" title="cart" itemprop="url" style="color:#8e2a17">Login</a>    
+    </div>
+    <div id="customer-login" class="row-fluid" style="border:1px solid #ecdbc6;background:white;padding:0px">
+      <div style="border:1px solid #ecdbc6;background:white;padding:0px">
+        <p style="font-size:14px;color: #5d3f3f;text-transform: uppercase;margin:5px 10px">WELCOME, PLEASE SIGN IN</p>
+      </div>
+      <div class="span5" style="margin:0px;padding:0px 20px 20px">
+        <h2 style="font-size:13px;color: #ce6140;font-weight: bold;margin-top:0px">New Customer</h2>
+        <p  class="text-login">I am a new customer.</p>
+        <p  class="text-login">By creating an account at Tea Store you will be able to shop faster, be up to date on an orders status, and keep track of the orders you have previously made.</p>
+        <a href="/account/register" class="btn_button" style="float:right">Continue</a>
+      </div>
+      <div id="login" class="span7" style="padding:0px 20px 20px;margin:0px">
+        <h2 style="font-size:13px;color: #ce6140;font-weight: bold;margin-top:0px">Returning Customer</h2>
+        <p class="text-login">I am a returning customer.</p>
+        <div class="clearfix">
+        {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+  
+        <label for="customer_email" class="label_login">Email Address</label>
+        <input type="email" value="" name="customer[email]" id="customer_email" class="text_login" />
+  
+        {% if form.password_needed %}
+        <label for="customer_password" class="label_login">Password</label>
+        <input type="password" value="" name="customer[password]" id="customer_password" class="text_login" size="16" />
+          {% endif %}
+        </div>
+        <div class="action_bottom clearfix">
+          <a href="#" onclick="showRecoverPasswordForm();return false;" style="font-size:12px;color:#ce6140">Password forgotten? Click here.</a>
+          <input class="btn_button" type="submit" value="Sign In" style="float:right;margin-top:17px"/>
+          
+        </div>
+          {% endform %}
+      </div>
+    
+      <div id="recover-password" style="padding:0px 20px 20px;margin:0px;display:none;min-height:240px;position: relative;" class="span7">
+      <h2 style="font-size:13px;color: #ce6140;font-weight: bold;margin-top:0px">Reset Password</h2>
+      <p class="note">We will send you an email to reset your password.</p>
+
+      {% form 'recover_customer_password' %}
+      {{ form.errors | default_errors }}
+	  <div class="clearfix">
+      	<label for="email" class="label_login">Email Address</label>
+     	 <input type="email" value="" size="30" name="email" id="recover-email" class="text_login" />
+	  </div>
+        <input class="btn_button" type="submit" value="Continue" style="position: absolute;bottom:20px;right:20px"/>
+      <a href="#" onclick="hideRecoverPasswordForm();return false;" class="btn_button" style="position: absolute;bottom:20px;left:20px">Back</a>
+      
+          {% endform %}
+    </div>
+    
+    {% if shop.checkout.guest_login %}
+    <div id="guest" class="span5">
+      <h2>Guest Login</h2>
+      {% form 'guest_login' %}
+      <input class="btn" type="submit" value="Continue as Guest" />
+      {% endform %}
+    </div>
+    {% endif %}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function showRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'block';
+    document.getElementById('login').style.display='none';
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+  }
+
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+</script>

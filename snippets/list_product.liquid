@@ -1,0 +1,28 @@
+<div class="product {% if settings.products_per_row == "4" %} span3{% endif %}{% if settings.products_per_row == "3" %} span4{% endif %}{% if settings.products_per_row == "2" %} span6{% endif %}" style= "margin:0px !important;">
+{% if collection.products.size > 0 %}
+<ul id="products" class="clear">
+	<!-- START PRODUCT {{ forloop.index }} -->
+	<li{% cycle '', '', ' class="end"' %}>
+		<!-- START IMAGE -->
+		<div class="image">
+			<div class="align">
+				<div><a href="{{ product.url | within: collection }}"><img src="{{ product.images[0] | product_img_url: "medium" }}" alt="{{ product.title | escape }}" /></a></div>
+			</div>
+		</div>
+		<!-- END IMAGE -->
+		<h3><a href="{{ product.url | within: collection }}">{{ product.title | escape | truncate: 25 }}</a></h3>
+		<p>{{ product.price | money }}{% if product.compare_at_price_max > product.price %} <del>{{ product.compare_at_price_max | money }}</del>{% endif %}</p>
+	</li>
+	<!-- END PRODUCT {{ forloop.index }} -->
+</ul>{% else %}
+<p id="empty">There are no products in this collection.</p>{% endif %}
+ </div>
+{% if settings.products_per_row == "4" %}
+{% cycle 'clear-product-loop': '', '', '', '<div style="clear:both;"></div>' %}
+{% endif %}
+{% if settings.products_per_row == "3" %}
+{% cycle 'clear-product-loop': '', '', '<div style="clear:both;"></div>' %}
+{% endif %}
+{% if settings.products_per_row == "2" %}
+{% cycle 'clear-product-loop': '', '<div style="clear:both;"></div>' %}
+{% endif %}

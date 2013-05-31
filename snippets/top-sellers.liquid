@@ -1,0 +1,3 @@
+ {% for top-sellers in collection.top-sellers limit: 3 %}
+          <a href="{{ top-sellers.url }}"><img src="{{ top-sellers.featured_image | top-sellers_img_url: 'medium'  }}" /></a>
+          {% endfor %}

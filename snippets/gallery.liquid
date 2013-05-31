@@ -1,0 +1,14 @@
+<div class="new_product">
+      <form id="add-item-form" action="/cart/add" method="post" class="variants clearfix">
+        <select id="product-select" name="id" style="display:none">
+          {% for variant in product.variants %}
+          	<option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+          {% endfor %}
+        </select>
+        <div class="image_product">
+           <a href="{{ product.url }}"><img src="{{ product.featured_image | product_img_url: 'medium'  }}" /></a>
+        </div>
+        <a href="{{ product.url }}" style="color: #ce6140;font-size: 14px;font-family: "Times New Roman",Times,serif;line-height: 1.35em;">{{ product.title }}</a>
+        <br />   
+      </form>
+</div>
